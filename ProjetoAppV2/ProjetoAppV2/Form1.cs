@@ -238,6 +238,7 @@ namespace ProjetoAppV2
             removeButton.Hide();
             editButton.Hide();
             saveButton.Show();
+            cancelButton.Show();
             switch (currentAtt) {
                 case "Condomínio":
                     editCondominio(true);
@@ -251,25 +252,19 @@ namespace ProjetoAppV2
         {
             String message = "Tem certeza que deseja atualizar?";
             String title = "Salvar";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNoCancel;
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
             DialogResult result = MessageBox.Show(message, title, buttons);
 
             if (result == DialogResult.Yes)
             {
                 Debug.WriteLine("Salvo :)");
-
-            }
-            else if (result == DialogResult.No) {
-                // Alterar os inputs para o valor original do condominio
-                ShowCondominio();
-            }
-            if (result == DialogResult.Yes || result == DialogResult.No) {
                 attDropdown.Enabled = true;
                 condominioListBox.Enabled = true;
                 attListBox.Enabled = true;
                 removeButton.Show();
                 editButton.Show();
                 saveButton.Hide();
+                cancelButton.Hide();
                 switch (currentAtt)
                 {
                     case "Condomínio":
@@ -278,6 +273,28 @@ namespace ProjetoAppV2
                     default:
                         break;
                 }
+            }
+        }
+
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            attDropdown.Items.Clear();
+            ShowCondominio();
+            attDropdown.Enabled = true;
+            condominioListBox.Enabled = true;
+            attListBox.Enabled = true;
+            removeButton.Show();
+            editButton.Show();
+            saveButton.Hide();
+            cancelButton.Hide();
+            switch (currentAtt)
+            {
+                case "Condomínio":
+                    editCondominio(false);
+                    break;
+                default:
+                    break;
             }
         }
         private void editCondominio(bool value) {
@@ -290,7 +307,6 @@ namespace ProjetoAppV2
             condominioNumRegistro.Enabled = value;
             condominioSaldo.Enabled = value;
         }
-
 
     }
 }
