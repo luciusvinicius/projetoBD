@@ -83,23 +83,30 @@ namespace ProjetoAppV2
 
         private void condominioListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine(condominioListBox.SelectedIndex);
             attDropdown.Items.Clear();
+            attListBox.Items.Clear();
+            hideParameters();
             if (condominioListBox.SelectedIndex >= 0)
             {
                 currentCondominio = condominioListBox.SelectedIndex;
                 ShowCondominio();
             }
 
+            attDropdown.SelectedIndex = 0;
+
         }
 
         private void hideParameters() {
-            fracaoArea.Visible = false;
-            fracaoAreaText.Visible = false;
-            fracaoEndereco.Visible = false;
-            fracaoEnderecoText.Visible = false;
-            fracaoIdentificador.Visible = false;
-            fracaoIdentificadorText.Visible = false;
+            removeButton.Hide();
+            editButton.Hide();
+            //fracaoArea.Visible = false;
+            //fracaoAreaText.Visible = false;
+            //fracaoEndereco.Visible = false;
+            //fracaoEnderecoText.Visible = false;
+            //fracaoIdentificador.Visible = false;
+            //fracaoIdentificadorText.Visible = false;
+            fracaoPainel.Hide();
+            condominioPainel.Hide();
         }
 
         private void ShowCondominio()
@@ -109,19 +116,20 @@ namespace ProjetoAppV2
             }
                 
             Condominio condominio = (Condominio)condominioListBox.Items[currentCondominio];
-            //txtID.Text = contact.CustomerID;
-            //txtCompany.Text = contact.CompanyName;
-            //txtContact.Text = contact.ContactName;
-            //txtAddress1.Text = contact.Address1;
-            //txtCity.Text = contact.City;
-            //txtState.Text = contact.State;
-            //txtZIP.Text = contact.ZIP;
-            //txtCountry.Text = contact.Country;
-            //txtTel.Text = contact.tel;
-            //txtFax.Text = contact.FAX;
 
+            attDropdown.Items.Add("Condomínio");
             attDropdown.Items.Add("Fração");
             attDropdown.Items.Add("Pessoas");
+            
+            condominioNome.Text = condominio.Nome;
+            condominioEndereco.Text = condominio.Endereco;
+            condominioEstado.Text = condominio.Estado;
+            condominioInicio.Text = condominio.InicioExercicio;
+            condominioFim.Text = condominio.FimExercicio;
+            condominioNumContribuinte.Text = condominio.NumContribuinte;
+            condominioNumRegistro.Text = condominio.NumRegistro;
+            condominioSaldo.Text = condominio.Saldo;
+
         }
 
         private void attDropdown_SelectedIndexChanged(object sender, EventArgs e)
@@ -133,8 +141,16 @@ namespace ProjetoAppV2
             attListBox.Items.Clear();
             Condominio condominio = (Condominio) condominioListBox.SelectedItem;
             String numContribuinte = condominio.NumContribuinte;
+            attListBox.Visible = true;
             switch (selection)
             {
+                case "Condomínio":
+                    condominioPainel.Show();
+                    removeButton.Show();
+                    editButton.Show();
+                    attListBox.Visible = false;
+                    currentAtt = "Condomínio";
+                    break;
                 case "Fração":
                     ShowFracoes(numContribuinte);
                     currentAtt = "Fração";
@@ -168,11 +184,113 @@ namespace ProjetoAppV2
                 attListBox.Items.Add(F);
             }
 
+            reader.Close();
+
         }
 
         private void attListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Debug.WriteLine("hm: "+attListBox.SelectedItem);
+        
+            removeButton.Show();
+            editButton.Show();
+            switch (currentAtt) {
+                case "Fração":
+                    Fracao F = (Fracao) attListBox.SelectedItem;
+                    showFracao(F);
+                    break;
+                default:
+                    break;
+              }
         }
+
+        private void showFracao(Fracao F) {
+            fracaoPainel.Show();
+            //fracaoArea.Visible = true;
+            //fracaoAreaText.Visible = true;
+            //fracaoEndereco.Visible = true;
+            //fracaoEnderecoText.Visible = true;
+            //fracaoIdentificador.Visible = true;
+            //fracaoIdentificadorText.Visible = true;
+            fracaoIdentificador.Text = F.Identificador;
+            fracaoArea.Text = F.Area;
+            fracaoEndereco.Text = F.Localizacao;
+        }
+
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+            String message = "Tem certeza que deseja apagar da base de dados? (Não poderá refazer)";
+            String title = "Remover";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            DialogResult result = MessageBox.Show(message, title, buttons);
+
+            if (result == DialogResult.Yes)
+            {
+                Debug.WriteLine("Apagado >:(");
+            }
+ 
+        }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            attDropdown.Enabled = false;
+            condominioListBox.Enabled = false;
+            attListBox.Enabled = false;
+            removeButton.Hide();
+            editButton.Hide();
+            saveButton.Show();
+            switch (currentAtt) {
+                case "Condomínio":
+                    editCondominio(true);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            String message = "Tem certeza que deseja atualizar?";
+            String title = "Salvar";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNoCancel;
+            DialogResult result = MessageBox.Show(message, title, buttons);
+
+            if (result == DialogResult.Yes)
+            {
+                Debug.WriteLine("Salvo :)");
+
+            }
+            else if (result == DialogResult.No) {
+                // Alterar os inputs para o valor original do condominio
+                ShowCondominio();
+            }
+            if (result == DialogResult.Yes || result == DialogResult.No) {
+                attDropdown.Enabled = true;
+                condominioListBox.Enabled = true;
+                attListBox.Enabled = true;
+                removeButton.Show();
+                editButton.Show();
+                saveButton.Hide();
+                switch (currentAtt)
+                {
+                    case "Condomínio":
+                        editCondominio(false);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        private void editCondominio(bool value) {
+            condominioEndereco.Enabled = value;
+            condominioEstado.Enabled = value;
+            condominioFim.Enabled = value;
+            condominioInicio.Enabled = value;
+            condominioNome.Enabled = value;
+            condominioNumContribuinte.Enabled = value;
+            condominioNumRegistro.Enabled = value;
+            condominioSaldo.Enabled = value;
+        }
+
+
     }
 }

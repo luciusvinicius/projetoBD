@@ -65,12 +65,12 @@ namespace ProjetoClasse
         public String Estado
         {
             get { return _estado; }
-            set { _estado = value; }
+            set { _estado = value.Equals("True") ? "Ativo" : "Inativo"; }
         }
 
         public String Saldo { 
             get { return _saldo; }
-            set { _estado = value; }
+            set { _saldo = value; }
         }
 
         public String Endereco
