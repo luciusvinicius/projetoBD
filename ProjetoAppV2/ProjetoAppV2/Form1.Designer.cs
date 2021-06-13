@@ -69,10 +69,16 @@ namespace ProjetoAppV2
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.addType = new System.Windows.Forms.ComboBox();
+            this.addCondominio = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.addCondominioNumContribuinte = new System.Windows.Forms.TextBox();
             this.viewAdd.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.fracaoPainel.SuspendLayout();
             this.condominioPainel.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.addCondominio.SuspendLayout();
             this.SuspendLayout();
             // 
             // viewAdd
@@ -477,6 +483,8 @@ namespace ProjetoAppV2
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.addCondominio);
+            this.tabPage2.Controls.Add(this.addType);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -484,6 +492,44 @@ namespace ProjetoAppV2
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Add";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // addType
+            // 
+            this.addType.FormattingEnabled = true;
+            this.addType.Items.AddRange(new object[] {
+            "Condomínio",
+            "Fração"});
+            this.addType.Location = new System.Drawing.Point(3, 3);
+            this.addType.Name = "addType";
+            this.addType.Size = new System.Drawing.Size(121, 23);
+            this.addType.TabIndex = 0;
+            this.addType.SelectedIndexChanged += new System.EventHandler(this.addType_SelectedIndexChanged);
+            // 
+            // addCondominio
+            // 
+            this.addCondominio.Controls.Add(this.addCondominioNumContribuinte);
+            this.addCondominio.Controls.Add(this.label9);
+            this.addCondominio.Location = new System.Drawing.Point(3, 42);
+            this.addCondominio.Name = "addCondominio";
+            this.addCondominio.Size = new System.Drawing.Size(765, 320);
+            this.addCondominio.TabIndex = 1;
+            this.addCondominio.Visible = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(0, 0);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(121, 15);
+            this.label9.TabIndex = 0;
+            this.label9.Text = "Número Contribuinte";
+            // 
+            // addCondominioNumContribuinte
+            // 
+            this.addCondominioNumContribuinte.Location = new System.Drawing.Point(0, 28);
+            this.addCondominioNumContribuinte.Name = "addCondominioNumContribuinte";
+            this.addCondominioNumContribuinte.Size = new System.Drawing.Size(121, 23);
+            this.addCondominioNumContribuinte.TabIndex = 1;
             // 
             // Form1
             // 
@@ -501,6 +547,9 @@ namespace ProjetoAppV2
             this.fracaoPainel.PerformLayout();
             this.condominioPainel.ResumeLayout(false);
             this.condominioPainel.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.addCondominio.ResumeLayout(false);
+            this.addCondominio.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -547,6 +596,10 @@ namespace ProjetoAppV2
         private System.Windows.Forms.TextBox secAttSearch;
         private System.Windows.Forms.ComboBox secAttDropdown;
         private System.Windows.Forms.ListBox secAttListBox;
+        private System.Windows.Forms.ComboBox addType;
+        private System.Windows.Forms.Panel addCondominio;
+        private System.Windows.Forms.TextBox addCondominioNumContribuinte;
+        private System.Windows.Forms.Label label9;
     }
 }
 
