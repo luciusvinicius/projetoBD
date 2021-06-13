@@ -29,8 +29,7 @@ namespace ProjetoAppV2
         {
             cn = getSGBDConnection();
             //loadCustomersToolStripMenuItem_Click(sender, e);
-            Debug.WriteLine("sussssss");
-            loadCondominios(sender, e);
+            loadCondominios(sender, e, "");
         }
 
         private SqlConnection getSGBDConnection()
@@ -49,10 +48,21 @@ namespace ProjetoAppV2
             return cn.State == ConnectionState.Open;
         }
 
-        private void loadCondominios(object sender, EventArgs e) {
+        private void loadCondominios(object sender, EventArgs e, String filter) {
+            condominioListBox.Items.Clear();
             if (!verifySGBDConnection()) return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM gestaoCondominio.condominio", cn);
+            String query;
+
+            if (filter.Equals(""))
+                query = "SELECT * FROM gestaoCondominio.condominio " +
+                    "ORDER BY nome";
+            else
+                query = "SELECT * FROM gestaoCondominio.condominio " +
+                    "WHERE nome LIKE '%" + filter + "%' " +
+                    "ORDER BY nome";
+
+            SqlCommand cmd = new SqlCommand(query, cn);
             SqlDataReader reader = cmd.ExecuteReader();
             condominioListBox.Items.Clear();
 
@@ -67,7 +77,6 @@ namespace ProjetoAppV2
                 C.Estado = reader["estado"].ToString();
                 C.Saldo = reader["saldo"].ToString();
                 C.Endereco = reader["endereço"].ToString();
-                Debug.WriteLine(C.Nome);
                 condominioListBox.Items.Add(C);
             }
             reader.Close();
@@ -99,6 +108,7 @@ namespace ProjetoAppV2
         private void hideParameters() {
             removeButton.Hide();
             editButton.Hide();
+            attSearch.Hide();
             //fracaoArea.Visible = false;
             //fracaoAreaText.Visible = false;
             //fracaoEndereco.Visible = false;
@@ -107,6 +117,9 @@ namespace ProjetoAppV2
             //fracaoIdentificadorText.Visible = false;
             fracaoPainel.Hide();
             condominioPainel.Hide();
+            secAttListBox.Hide();
+            secAttDropdown.Hide();
+            secAttSearch.Hide();
         }
 
         private void ShowCondominio()
@@ -138,21 +151,26 @@ namespace ProjetoAppV2
 
             // esconder todas as caixas de texto, para então mostrar a correta
             hideParameters();
+            attSearch.Show();
+
             attListBox.Items.Clear();
             Condominio condominio = (Condominio) condominioListBox.SelectedItem;
             String numContribuinte = condominio.NumContribuinte;
             attListBox.Visible = true;
+            attSearch.Text = "";
+
             switch (selection)
             {
                 case "Condomínio":
                     condominioPainel.Show();
                     removeButton.Show();
                     editButton.Show();
+                    attSearch.Hide();
                     attListBox.Visible = false;
                     currentAtt = "Condomínio";
                     break;
                 case "Fração":
-                    ShowFracoes(numContribuinte);
+                    ShowFracoes(numContribuinte, "");
                     currentAtt = "Fração";
                     break;
                 default:
@@ -160,7 +178,7 @@ namespace ProjetoAppV2
             }
         }
 
-        private void ShowFracoes(String numContribuinte) {
+        private void ShowFracoes(String numContribuinte, String filter) {
             if (!verifySGBDConnection()) return;
 
             String query =
@@ -168,7 +186,8 @@ namespace ProjetoAppV2
                 "gestaoCondominio.condominio AS C JOIN gestaoCondominio.fracao AS F " +
                 "ON C.numContribuinte = F.FK_Condominio " +
                 "AND C.numContribuinte = " + numContribuinte;
-            Debug.WriteLine(query);
+            if (!filter.Equals(""))
+                query += " WHERE identificador like '%" + filter + "%'";
 
             SqlCommand cmd = new SqlCommand(query, cn);
 
@@ -180,7 +199,6 @@ namespace ProjetoAppV2
                 F.Identificador = reader["identificador"].ToString();
                 F.Area = reader["area"].ToString();
                 F.Localizacao = reader["localizacao"].ToString();
-                Debug.WriteLine(F.Identificador);
                 attListBox.Items.Add(F);
             }
 
@@ -190,11 +208,19 @@ namespace ProjetoAppV2
 
         private void attListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-        
+            secAttDropdown.Items.Clear();
+            secAttListBox.Items.Clear();
             removeButton.Show();
             editButton.Show();
             switch (currentAtt) {
                 case "Fração":
+                    secAttDropdown.Show();
+                    secAttDropdown.Items.Add("Fração");
+                    secAttDropdown.Items.Add("Proprietários Pessoas");
+                    secAttDropdown.Items.Add("Proprietários Empresa");
+                    secAttDropdown.Items.Add("Condominos Pessoas");
+                    secAttDropdown.Items.Add("Condominos Empresa");
+                    secAttDropdown.SelectedIndex = 0;
                     Fracao F = (Fracao) attListBox.SelectedItem;
                     showFracao(F);
                     break;
@@ -235,6 +261,7 @@ namespace ProjetoAppV2
             attDropdown.Enabled = false;
             condominioListBox.Enabled = false;
             attListBox.Enabled = false;
+        
             removeButton.Hide();
             editButton.Hide();
             saveButton.Show();
@@ -308,5 +335,102 @@ namespace ProjetoAppV2
             condominioSaldo.Enabled = value;
         }
 
+        private void condominioSearch_TextChanged(object sender, EventArgs e)
+        {
+            loadCondominios(sender, e, condominioSearch.Text);
+        }
+
+        private void attSearch_TextChanged(object sender, EventArgs e)
+        {
+            attListBox.Items.Clear();
+            switch (currentAtt) {
+                case "Fração":
+                    Condominio condominio = (Condominio)condominioListBox.SelectedItem;
+                    String numContribuinte = condominio.NumContribuinte;
+                    ShowFracoes(numContribuinte, attSearch.Text);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        private void showProprietariosPessoas(String condominio, String fracao, String filter, bool isSub)
+        {
+            if (!verifySGBDConnection()) return;
+
+            String query = "SELECT c.nome AS condominio, e.nome AS pessoa, " +
+                "pes.genero, f.identificador " +
+                "FROM gestaoCondominio.condominio AS c " +
+                "JOIN gestaoCondominio.fracao AS f " +
+                "ON c.numContribuinte = " + condominio + " " +
+                "AND f.FK_Condominio = c.numContribuinte " +
+                "JOIN gestaoCondominio.proprietario AS p " +
+                "ON p.FK_Fracao = f.identificador " +
+                "AND p.FK_Condominio = f.FK_Condominio ";
+
+            if (!fracao.Equals(""))
+                query += "AND f.identificador = '"+fracao+"' ";
+
+            query += "JOIN gestaoCondominio.entidade AS e " +
+                "ON p.FK_Entidade = e.identificador " +
+                "JOIN gestaoCondominio.pessoa AS pes " +
+                "ON pes.identificador = e.identificador";
+
+            if (!filter.Equals(""))
+                query += " WHERE e.nome like '%" + filter + "%'";
+            Debug.WriteLine(query);
+
+            SqlCommand cmd = new SqlCommand(query, cn);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Debug.WriteLine(reader["condominio"]);
+                Debug.WriteLine(reader["pessoa"]);
+                //Fracao F = new Fracao();
+                //F.Identificador = reader["identificador"].ToString();
+                //F.Area = reader["area"].ToString();
+                //F.Localizacao = reader["localizacao"].ToString();
+                //Debug.WriteLine(F.Identificador);
+                if (isSub) {
+                    // se deve alterar a listbox interna ou externa
+                 }
+                else { }
+                //attListBox.Items.Add(F);
+            }
+
+            reader.Close();
+
+        }
+
+        private void secAttDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Condominio c = (Condominio)condominioListBox.SelectedItem;
+            switch (currentAtt)
+            {
+                case "Fração":
+                    secAttListBox.Show();
+                    secAttSearch.Show();
+                    Fracao f = (Fracao)attListBox.SelectedItem;
+                    switch (secAttDropdown.SelectedItem) {
+                        case "Fração":
+                            secAttListBox.Hide();
+                            break;
+                        case "Proprietários Pessoas":
+                            Debug.WriteLine("amogus");
+                            showProprietariosPessoas(c.NumContribuinte, f.Identificador, secAttSearch.Text, true);
+                            break;
+
+                        default:
+                            break;
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 }

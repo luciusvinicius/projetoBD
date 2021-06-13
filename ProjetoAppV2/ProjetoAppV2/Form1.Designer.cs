@@ -31,8 +31,26 @@ namespace ProjetoAppV2
         {
             this.viewAdd = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.secAttSearch = new System.Windows.Forms.TextBox();
+            this.secAttDropdown = new System.Windows.Forms.ComboBox();
+            this.secAttListBox = new System.Windows.Forms.ListBox();
+            this.condominioSearch = new System.Windows.Forms.TextBox();
+            this.attSearch = new System.Windows.Forms.TextBox();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.editButton = new System.Windows.Forms.Button();
+            this.removeButton = new System.Windows.Forms.Button();
+            this.attDropdown = new System.Windows.Forms.ComboBox();
+            this.attListBox = new System.Windows.Forms.ListBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.condominioListBox = new System.Windows.Forms.ListBox();
+            this.fracaoPainel = new System.Windows.Forms.Panel();
+            this.fracaoEndereco = new System.Windows.Forms.TextBox();
+            this.fracaoEnderecoText = new System.Windows.Forms.Label();
+            this.fracaoArea = new System.Windows.Forms.TextBox();
+            this.fracaoAreaText = new System.Windows.Forms.Label();
+            this.fracaoIdentificador = new System.Windows.Forms.TextBox();
+            this.fracaoIdentificadorText = new System.Windows.Forms.Label();
             this.condominioPainel = new System.Windows.Forms.Panel();
             this.condominioEndereco = new System.Windows.Forms.TextBox();
             this.condominioSaldo = new System.Windows.Forms.TextBox();
@@ -50,24 +68,11 @@ namespace ProjetoAppV2
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.removeButton = new System.Windows.Forms.Button();
-            this.attDropdown = new System.Windows.Forms.ComboBox();
-            this.attListBox = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.condominioListBox = new System.Windows.Forms.ListBox();
-            this.fracaoPainel = new System.Windows.Forms.Panel();
-            this.fracaoEndereco = new System.Windows.Forms.TextBox();
-            this.fracaoEnderecoText = new System.Windows.Forms.Label();
-            this.fracaoArea = new System.Windows.Forms.TextBox();
-            this.fracaoAreaText = new System.Windows.Forms.Label();
-            this.fracaoIdentificador = new System.Windows.Forms.TextBox();
-            this.fracaoIdentificadorText = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.cancelButton = new System.Windows.Forms.Button();
             this.viewAdd.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.condominioPainel.SuspendLayout();
             this.fracaoPainel.SuspendLayout();
+            this.condominioPainel.SuspendLayout();
             this.SuspendLayout();
             // 
             // viewAdd
@@ -82,16 +87,21 @@ namespace ProjetoAppV2
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.secAttSearch);
+            this.tabPage1.Controls.Add(this.secAttDropdown);
+            this.tabPage1.Controls.Add(this.secAttListBox);
+            this.tabPage1.Controls.Add(this.condominioSearch);
+            this.tabPage1.Controls.Add(this.attSearch);
             this.tabPage1.Controls.Add(this.cancelButton);
             this.tabPage1.Controls.Add(this.saveButton);
             this.tabPage1.Controls.Add(this.editButton);
-            this.tabPage1.Controls.Add(this.condominioPainel);
             this.tabPage1.Controls.Add(this.removeButton);
             this.tabPage1.Controls.Add(this.attDropdown);
             this.tabPage1.Controls.Add(this.attListBox);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.condominioListBox);
             this.tabPage1.Controls.Add(this.fracaoPainel);
+            this.tabPage1.Controls.Add(this.condominioPainel);
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -99,6 +109,66 @@ namespace ProjetoAppV2
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "View";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // secAttSearch
+            // 
+            this.secAttSearch.Location = new System.Drawing.Point(338, 33);
+            this.secAttSearch.Name = "secAttSearch";
+            this.secAttSearch.PlaceholderText = "Pesquisa";
+            this.secAttSearch.Size = new System.Drawing.Size(100, 23);
+            this.secAttSearch.TabIndex = 34;
+            this.secAttSearch.Visible = false;
+            // 
+            // secAttDropdown
+            // 
+            this.secAttDropdown.FormattingEnabled = true;
+            this.secAttDropdown.Location = new System.Drawing.Point(338, 3);
+            this.secAttDropdown.Name = "secAttDropdown";
+            this.secAttDropdown.Size = new System.Drawing.Size(121, 23);
+            this.secAttDropdown.TabIndex = 33;
+            this.secAttDropdown.Text = "Atributos";
+            this.secAttDropdown.Visible = false;
+            this.secAttDropdown.SelectedIndexChanged += new System.EventHandler(this.secAttDropdown_SelectedIndexChanged);
+            // 
+            // secAttListBox
+            // 
+            this.secAttListBox.FormattingEnabled = true;
+            this.secAttListBox.ItemHeight = 15;
+            this.secAttListBox.Location = new System.Drawing.Point(338, 63);
+            this.secAttListBox.Name = "secAttListBox";
+            this.secAttListBox.Size = new System.Drawing.Size(121, 319);
+            this.secAttListBox.TabIndex = 32;
+            this.secAttListBox.Visible = false;
+            // 
+            // condominioSearch
+            // 
+            this.condominioSearch.Location = new System.Drawing.Point(3, 2);
+            this.condominioSearch.Name = "condominioSearch";
+            this.condominioSearch.PlaceholderText = "Pesquisa";
+            this.condominioSearch.Size = new System.Drawing.Size(100, 23);
+            this.condominioSearch.TabIndex = 31;
+            this.condominioSearch.TextChanged += new System.EventHandler(this.condominioSearch_TextChanged);
+            // 
+            // attSearch
+            // 
+            this.attSearch.Location = new System.Drawing.Point(211, 33);
+            this.attSearch.Name = "attSearch";
+            this.attSearch.PlaceholderText = "Pesquisa";
+            this.attSearch.Size = new System.Drawing.Size(100, 23);
+            this.attSearch.TabIndex = 26;
+            this.attSearch.Visible = false;
+            this.attSearch.TextChanged += new System.EventHandler(this.attSearch_TextChanged);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(583, 359);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 29;
+            this.cancelButton.Text = "Cancelar";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Visible = false;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // saveButton
             // 
@@ -122,6 +192,127 @@ namespace ProjetoAppV2
             this.editButton.Visible = false;
             this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
+            // removeButton
+            // 
+            this.removeButton.Location = new System.Drawing.Point(583, 359);
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(75, 23);
+            this.removeButton.TabIndex = 20;
+            this.removeButton.Text = "Remover";
+            this.removeButton.UseVisualStyleBackColor = true;
+            this.removeButton.Visible = false;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
+            // 
+            // attDropdown
+            // 
+            this.attDropdown.FormattingEnabled = true;
+            this.attDropdown.Location = new System.Drawing.Point(211, 3);
+            this.attDropdown.Name = "attDropdown";
+            this.attDropdown.Size = new System.Drawing.Size(121, 23);
+            this.attDropdown.TabIndex = 11;
+            this.attDropdown.Text = "Atributos";
+            this.attDropdown.SelectedIndexChanged += new System.EventHandler(this.attDropdown_SelectedIndexChanged);
+            // 
+            // attListBox
+            // 
+            this.attListBox.FormattingEnabled = true;
+            this.attListBox.ItemHeight = 15;
+            this.attListBox.Location = new System.Drawing.Point(211, 63);
+            this.attListBox.Name = "attListBox";
+            this.attListBox.Size = new System.Drawing.Size(121, 319);
+            this.attListBox.TabIndex = 12;
+            this.attListBox.Visible = false;
+            this.attListBox.SelectedIndexChanged += new System.EventHandler(this.attListBox_SelectedIndexChanged);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(704, 409);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 10);
+            this.button1.TabIndex = 13;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // condominioListBox
+            // 
+            this.condominioListBox.FormattingEnabled = true;
+            this.condominioListBox.ItemHeight = 15;
+            this.condominioListBox.Location = new System.Drawing.Point(3, 33);
+            this.condominioListBox.Name = "condominioListBox";
+            this.condominioListBox.Size = new System.Drawing.Size(182, 349);
+            this.condominioListBox.TabIndex = 10;
+            this.condominioListBox.SelectedIndexChanged += new System.EventHandler(this.condominioListBox_SelectedIndexChanged);
+            // 
+            // fracaoPainel
+            // 
+            this.fracaoPainel.Controls.Add(this.fracaoEndereco);
+            this.fracaoPainel.Controls.Add(this.fracaoEnderecoText);
+            this.fracaoPainel.Controls.Add(this.fracaoArea);
+            this.fracaoPainel.Controls.Add(this.fracaoAreaText);
+            this.fracaoPainel.Controls.Add(this.fracaoIdentificador);
+            this.fracaoPainel.Controls.Add(this.fracaoIdentificadorText);
+            this.fracaoPainel.Location = new System.Drawing.Point(465, 3);
+            this.fracaoPainel.Name = "fracaoPainel";
+            this.fracaoPainel.Size = new System.Drawing.Size(300, 350);
+            this.fracaoPainel.TabIndex = 21;
+            this.fracaoPainel.Visible = false;
+            // 
+            // fracaoEndereco
+            // 
+            this.fracaoEndereco.Enabled = false;
+            this.fracaoEndereco.Location = new System.Drawing.Point(21, 141);
+            this.fracaoEndereco.Multiline = true;
+            this.fracaoEndereco.Name = "fracaoEndereco";
+            this.fracaoEndereco.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.fracaoEndereco.Size = new System.Drawing.Size(277, 183);
+            this.fracaoEndereco.TabIndex = 25;
+            // 
+            // fracaoEnderecoText
+            // 
+            this.fracaoEnderecoText.AutoSize = true;
+            this.fracaoEnderecoText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fracaoEnderecoText.Location = new System.Drawing.Point(21, 105);
+            this.fracaoEnderecoText.Name = "fracaoEnderecoText";
+            this.fracaoEnderecoText.Size = new System.Drawing.Size(56, 15);
+            this.fracaoEnderecoText.TabIndex = 24;
+            this.fracaoEnderecoText.Text = "Endereço";
+            // 
+            // fracaoArea
+            // 
+            this.fracaoArea.Enabled = false;
+            this.fracaoArea.Location = new System.Drawing.Point(162, 59);
+            this.fracaoArea.Name = "fracaoArea";
+            this.fracaoArea.Size = new System.Drawing.Size(76, 23);
+            this.fracaoArea.TabIndex = 23;
+            // 
+            // fracaoAreaText
+            // 
+            this.fracaoAreaText.AutoSize = true;
+            this.fracaoAreaText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fracaoAreaText.Location = new System.Drawing.Point(162, 30);
+            this.fracaoAreaText.Name = "fracaoAreaText";
+            this.fracaoAreaText.Size = new System.Drawing.Size(57, 15);
+            this.fracaoAreaText.TabIndex = 22;
+            this.fracaoAreaText.Text = "Area (m²)";
+            // 
+            // fracaoIdentificador
+            // 
+            this.fracaoIdentificador.Enabled = false;
+            this.fracaoIdentificador.Location = new System.Drawing.Point(21, 59);
+            this.fracaoIdentificador.Name = "fracaoIdentificador";
+            this.fracaoIdentificador.Size = new System.Drawing.Size(100, 23);
+            this.fracaoIdentificador.TabIndex = 20;
+            // 
+            // fracaoIdentificadorText
+            // 
+            this.fracaoIdentificadorText.AutoSize = true;
+            this.fracaoIdentificadorText.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.fracaoIdentificadorText.Location = new System.Drawing.Point(21, 30);
+            this.fracaoIdentificadorText.Name = "fracaoIdentificadorText";
+            this.fracaoIdentificadorText.Size = new System.Drawing.Size(74, 15);
+            this.fracaoIdentificadorText.TabIndex = 21;
+            this.fracaoIdentificadorText.Text = "Identificador";
+            // 
             // condominioPainel
             // 
             this.condominioPainel.Controls.Add(this.condominioEndereco);
@@ -140,9 +331,9 @@ namespace ProjetoAppV2
             this.condominioPainel.Controls.Add(this.label3);
             this.condominioPainel.Controls.Add(this.label2);
             this.condominioPainel.Controls.Add(this.label1);
-            this.condominioPainel.Location = new System.Drawing.Point(211, 33);
+            this.condominioPainel.Location = new System.Drawing.Point(211, 63);
             this.condominioPainel.Name = "condominioPainel";
-            this.condominioPainel.Size = new System.Drawing.Size(554, 320);
+            this.condominioPainel.Size = new System.Drawing.Size(554, 290);
             this.condominioPainel.TabIndex = 26;
             this.condominioPainel.Visible = false;
             // 
@@ -153,7 +344,7 @@ namespace ProjetoAppV2
             this.condominioEndereco.Multiline = true;
             this.condominioEndereco.Name = "condominioEndereco";
             this.condominioEndereco.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.condominioEndereco.Size = new System.Drawing.Size(539, 124);
+            this.condominioEndereco.Size = new System.Drawing.Size(539, 89);
             this.condominioEndereco.TabIndex = 15;
             // 
             // condominioSaldo
@@ -284,127 +475,6 @@ namespace ProjetoAppV2
             this.label1.TabIndex = 0;
             this.label1.Text = "Número Contribuinte";
             // 
-            // removeButton
-            // 
-            this.removeButton.Location = new System.Drawing.Point(583, 359);
-            this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(75, 23);
-            this.removeButton.TabIndex = 20;
-            this.removeButton.Text = "Remover";
-            this.removeButton.UseVisualStyleBackColor = true;
-            this.removeButton.Visible = false;
-            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
-            // 
-            // attDropdown
-            // 
-            this.attDropdown.FormattingEnabled = true;
-            this.attDropdown.Location = new System.Drawing.Point(211, 3);
-            this.attDropdown.Name = "attDropdown";
-            this.attDropdown.Size = new System.Drawing.Size(121, 23);
-            this.attDropdown.TabIndex = 11;
-            this.attDropdown.Text = "Atributos";
-            this.attDropdown.SelectedIndexChanged += new System.EventHandler(this.attDropdown_SelectedIndexChanged);
-            // 
-            // attListBox
-            // 
-            this.attListBox.FormattingEnabled = true;
-            this.attListBox.ItemHeight = 15;
-            this.attListBox.Location = new System.Drawing.Point(211, 33);
-            this.attListBox.Name = "attListBox";
-            this.attListBox.Size = new System.Drawing.Size(121, 349);
-            this.attListBox.TabIndex = 12;
-            this.attListBox.Visible = false;
-            this.attListBox.SelectedIndexChanged += new System.EventHandler(this.attListBox_SelectedIndexChanged);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(704, 409);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 10);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // condominioListBox
-            // 
-            this.condominioListBox.FormattingEnabled = true;
-            this.condominioListBox.ItemHeight = 15;
-            this.condominioListBox.Location = new System.Drawing.Point(3, 3);
-            this.condominioListBox.Name = "condominioListBox";
-            this.condominioListBox.Size = new System.Drawing.Size(182, 379);
-            this.condominioListBox.TabIndex = 10;
-            this.condominioListBox.SelectedIndexChanged += new System.EventHandler(this.condominioListBox_SelectedIndexChanged);
-            // 
-            // fracaoPainel
-            // 
-            this.fracaoPainel.Controls.Add(this.fracaoEndereco);
-            this.fracaoPainel.Controls.Add(this.fracaoEnderecoText);
-            this.fracaoPainel.Controls.Add(this.fracaoArea);
-            this.fracaoPainel.Controls.Add(this.fracaoAreaText);
-            this.fracaoPainel.Controls.Add(this.fracaoIdentificador);
-            this.fracaoPainel.Controls.Add(this.fracaoIdentificadorText);
-            this.fracaoPainel.Location = new System.Drawing.Point(338, 3);
-            this.fracaoPainel.Name = "fracaoPainel";
-            this.fracaoPainel.Size = new System.Drawing.Size(427, 350);
-            this.fracaoPainel.TabIndex = 21;
-            this.fracaoPainel.Visible = false;
-            // 
-            // fracaoEndereco
-            // 
-            this.fracaoEndereco.Enabled = false;
-            this.fracaoEndereco.Location = new System.Drawing.Point(21, 141);
-            this.fracaoEndereco.Multiline = true;
-            this.fracaoEndereco.Name = "fracaoEndereco";
-            this.fracaoEndereco.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.fracaoEndereco.Size = new System.Drawing.Size(322, 183);
-            this.fracaoEndereco.TabIndex = 25;
-            // 
-            // fracaoEnderecoText
-            // 
-            this.fracaoEnderecoText.AutoSize = true;
-            this.fracaoEnderecoText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.fracaoEnderecoText.Location = new System.Drawing.Point(21, 105);
-            this.fracaoEnderecoText.Name = "fracaoEnderecoText";
-            this.fracaoEnderecoText.Size = new System.Drawing.Size(74, 21);
-            this.fracaoEnderecoText.TabIndex = 24;
-            this.fracaoEnderecoText.Text = "Endereço";
-            // 
-            // fracaoArea
-            // 
-            this.fracaoArea.Enabled = false;
-            this.fracaoArea.Location = new System.Drawing.Point(162, 59);
-            this.fracaoArea.Name = "fracaoArea";
-            this.fracaoArea.Size = new System.Drawing.Size(76, 23);
-            this.fracaoArea.TabIndex = 23;
-            // 
-            // fracaoAreaText
-            // 
-            this.fracaoAreaText.AutoSize = true;
-            this.fracaoAreaText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.fracaoAreaText.Location = new System.Drawing.Point(162, 30);
-            this.fracaoAreaText.Name = "fracaoAreaText";
-            this.fracaoAreaText.Size = new System.Drawing.Size(76, 21);
-            this.fracaoAreaText.TabIndex = 22;
-            this.fracaoAreaText.Text = "Area (m²)";
-            // 
-            // fracaoIdentificador
-            // 
-            this.fracaoIdentificador.Enabled = false;
-            this.fracaoIdentificador.Location = new System.Drawing.Point(21, 59);
-            this.fracaoIdentificador.Name = "fracaoIdentificador";
-            this.fracaoIdentificador.Size = new System.Drawing.Size(100, 23);
-            this.fracaoIdentificador.TabIndex = 20;
-            // 
-            // fracaoIdentificadorText
-            // 
-            this.fracaoIdentificadorText.AutoSize = true;
-            this.fracaoIdentificadorText.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.fracaoIdentificadorText.Location = new System.Drawing.Point(21, 30);
-            this.fracaoIdentificadorText.Name = "fracaoIdentificadorText";
-            this.fracaoIdentificadorText.Size = new System.Drawing.Size(97, 21);
-            this.fracaoIdentificadorText.TabIndex = 21;
-            this.fracaoIdentificadorText.Text = "Identificador";
-            // 
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
@@ -414,17 +484,6 @@ namespace ProjetoAppV2
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Add";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.Location = new System.Drawing.Point(583, 359);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 29;
-            this.cancelButton.Text = "Cancelar";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Visible = false;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // Form1
             // 
@@ -437,10 +496,11 @@ namespace ProjetoAppV2
             this.Load += new System.EventHandler(this.Form1_Load);
             this.viewAdd.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.condominioPainel.ResumeLayout(false);
-            this.condominioPainel.PerformLayout();
+            this.tabPage1.PerformLayout();
             this.fracaoPainel.ResumeLayout(false);
             this.fracaoPainel.PerformLayout();
+            this.condominioPainel.ResumeLayout(false);
+            this.condominioPainel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -482,6 +542,11 @@ namespace ProjetoAppV2
         private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.TextBox attSearch;
+        private System.Windows.Forms.TextBox condominioSearch;
+        private System.Windows.Forms.TextBox secAttSearch;
+        private System.Windows.Forms.ComboBox secAttDropdown;
+        private System.Windows.Forms.ListBox secAttListBox;
     }
 }
 
