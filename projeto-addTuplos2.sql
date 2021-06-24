@@ -6,6 +6,7 @@ create table gestaoCondominio.pagamento (
 	referencia char(9),
 	dataPagamento date not null,
 	tipoPagamento varchar(30) not null,
+	descricao	varchar(120)
 )
 
 create table gestaoCondominio.entidade(
@@ -615,40 +616,66 @@ GROUP BY c.nome, e.nome;
 
 
 ------- Stored Pocedures -------
-DROP PROCEDURE gestaoCondominio.ProprietariosFracao
+CREATE PROC gestaoCondominio.getFracoes
+@condominio char(9)
+AS
+BEGIN
+	SELECT identificador,area,localizacao FROM
+	gestaoCondominio.condominio AS C join
+	gestaoCondominio.fracao AS F
+	ON C.numContribuinte = F.FK_Condominio
+	AND C.numContribuinte = @condominio
+END
 
-CREATE PROCEDURE gestaoCondominio.ProprietariosFracao
+EXEC gestaoCondominio.getFracoes '295831584'
+
+SELECT * from gestaoCondominio.condominio
+
+create proc gestaoCondominio.getSeguros
+@condominio char(9)
+as
+begin
+	select s.* from gestaoCondominio.condominio as C
+	join gestaoCondominio.seguro as S
+	on C.numContribuinte = S.FK_Condominio
+	AND C.numContribuinte = @condominio
+end
+
+EXEC gestaoCondominio.getSeguros '295831584'
+
+create proc gestaoCondominio.getServicos
+@condominio char(9)
+as
+begin
+	select s.* from gestaoCondominio.condominio as C
+	join gestaoCondominio.servico as S
+	on C.numContribuinte = S.FK_Condominio
+	AND C.numContribuinte = @condominio
+end
+
+EXEC gestaoCondominio.getServicos '295831584'
+
+CREATE PROCEDURE gestaoCondominio.ProprietariosPessoas
 @condominio char(9), @fracao varchar(2)
 AS
 -- Desc: Obter todas as ENTIDADES (e seu tipo) que são proprietárias
-DECLARE @tablename TABLE (
-	identificador int,
-	telemovel char(9),
-	email varchar(120),
-	nome varchar(120),
-	enderecoAtual varchar(200),
-	tipo bit
-)
+	--SELECT DISTINCT ent.*,@tipo AS tipo
+	--FROM gestaoCondominio.condominio AS con
+	--JOIN gestaoCondominio.fracao AS frac
+	--ON con.numContribuinte = frac.FK_Condominio
+	--AND (@fracao = '' OR frac.identificador = @fracao)
+	--AND con.numContribuinte = @condominio
+	--JOIN gestaoCondominio.proprietario AS prop
+	--ON prop.FK_Fracao = frac.identificador
+	--AND prop.FK_Condominio = frac.FK_Condominio
+	--JOIN gestaoCondominio.entidade AS ent
+	--ON ent.identificador = prop.FK_Entidade
+	--JOIN gestaoCondominio.empresa AS emp
+	--ON emp.identificador = ent.identificador;
 
-DECLARE @tipo AS bit=0
-INSERT INTO @tablename
-	SELECT DISTINCT ent.*,@tipo AS tipo
-	FROM gestaoCondominio.condominio AS con
-	JOIN gestaoCondominio.fracao AS frac
-	ON con.numContribuinte = frac.FK_Condominio
-	AND (@fracao = '' OR frac.identificador = @fracao)
-	AND con.numContribuinte = @condominio
-	JOIN gestaoCondominio.proprietario AS prop
-	ON prop.FK_Fracao = frac.identificador
-	AND prop.FK_Condominio = frac.FK_Condominio
-	JOIN gestaoCondominio.entidade AS ent
-	ON ent.identificador = prop.FK_Entidade
-	JOIN gestaoCondominio.empresa AS emp
-	ON emp.identificador = ent.identificador;
-
-SET @tipo = 1
-INSERT INTO @tablename
-	SELECT DISTINCT ent.*,@tipo AS tipo
+--SET @tipo = 1
+--INSERT INTO @tablename
+	SELECT ent.*,pess.*,prop.*
 	FROM gestaoCondominio.condominio AS con
 	JOIN gestaoCondominio.fracao AS frac
 	ON con.numContribuinte = frac.FK_Condominio
@@ -660,11 +687,14 @@ INSERT INTO @tablename
 	JOIN gestaoCondominio.entidade AS ent
 	ON ent.identificador = prop.FK_Entidade
 	JOIN gestaoCondominio.pessoa AS pess
-	ON pess.identificador = ent.identificador;
+	ON pess.identificador = ent.identificador
+	ORDER BY nome;
 	
-SELECT * FROM @tablename ORDER BY nome
+DROP PROCEDURE gestaoCondominio.ProprietariosPessoas
 
-EXEC gestaoCondominio.ProprietariosFracao '253774987', '1C'
+EXEC gestaoCondominio.ProprietariosPessoas '295831584', ''
+
+select * from gestaoCondominio.condominio
 
 CREATE PROCEDURE gestaoCondominio.CondominosFracao
 @condominio char(9), @fracao varchar(2)
@@ -735,12 +765,12 @@ EXEC gestaoCondominio.insertCondominio '', '', '', '09/09/2019', '10/10/2020', 1
 
 -----------------------------------------------------------
 
-CREATE PROCEDURE gestaoCondominio.paga
+CREATE PROCEDURE gestaoCondominio.pagaMensalidade
 @ano smallint, @entidade INT, @condominio CHAR(9), @fracao CHAR(2),
 @valor MONEY, @tipo AS varchar(30)
 AS
 BEGIN TRANSACTION
-
+SAVE TRAN comeco
 DECLARE @valorMensalidade AS MONEY
 DECLARE @numMensalidades AS TINYINT
 DECLARE @newNumMens AS INT
@@ -756,17 +786,21 @@ SET @newNumMens = (@valor / @valorMensalidade)
 if @numMensalidades + @newNumMens > 12
 	BEGIN
 			RAISERROR ('Esse ano não aceita mais tanto pagamento!' ,16,1)
-			ROLLBACK TRAN
+			ROLLBACK TRAN comeco
 	END
 
 -- Se o valor pago for igual a 0, ou diferente de um valor exato,
 -- cancela a transação
+ELSE IF @valor < 0
+	BEGIN
+		RAISERROR ('Valor não pode ser negativo!' ,16,1)
+		ROLLBACK TRAN comeco
+	END
 
 ELSE IF @valor = 0 OR (@valor % @valorMensalidade != 0)
 	BEGIN
-		PRINT 'não deveria'
 		RAISERROR ('Valor pago tem de ser compatível com o valor da mensalidade!' ,16,1)
-		ROLLBACK TRAN
+		ROLLBACK TRAN comeco
 	END
 ELSE
 	BEGIN
@@ -833,7 +867,7 @@ ELSE
 
 	END
 
-DROP PROCEDURE gestaoCondominio.paga
+DROP PROCEDURE gestaoCondominio.pagaMensalidade
 
 EXEC gestaoCondominio.paga 2020, 13, '279352856', '0A', 32.75, 'Dinheiro' 
 
@@ -843,6 +877,193 @@ EXEC gestaoCondominio.paga 2020, 13, '279352856', '0A', 32.75, 'Dinheiro'
 SELECT * FROM gestaoCondominio.pagamento
 SELECT * FROM gestaoCondominio.mensalidade
 SELECT * from gestaoCondominio.associado
+
+--
+CREATE PROCEDURE gestaoCondominio.insertFracao
+@entidade AS int, @identificador AS char(2), @condominio AS char(9),
+@area as int, @localizacao as varchar(200), @zona as int
+AS
+BEGIN
+	BEGIN TRY
+		BEGIN TRANSACTION 
+		SAVE TRAN comeco
+
+		DECLARE @atual AS DATE = GETDATE()
+		-- Se não puder inserir na relação propietario (ou seja, entidade não existe)
+		-- ocorrerá rollback
+
+		INSERT INTO gestaoCondominio.fracao 
+		values(@identificador,@area,@localizacao,@condominio);
+
+		INSERT INTO gestaoCondominio.proprietario
+		values(@entidade, @condominio, @identificador, @atual, NULL)
+
+		INSERT INTO gestaoCondominio.temAssociada
+		values(@zona,@condominio,@identificador)
+
+		COMMIT TRAN
+	END TRY
+	BEGIN CATCH
+		--IF @@TRANCOUNT > 0	-- se tiver ocorrido alguma transaction
+			ROLLBACK TRAN comeco
+
+		DECLARE @qntd AS int
+
+		SELECT @qntd = count(*) FROM gestaoCondominio.condominio WHERE numContribuinte = @condominio
+
+		IF @qntd = 0
+			RAISERROR ('Condomínio não existe!',16,1)
+
+		SELECT @qntd = count(*) FROM gestaoCondominio.entidade WHERE identificador = @entidade
+
+		IF @qntd = 0
+			RAISERROR ('Entidade não existe!',16,1)
+
+		SELECT @qntd = count(*) FROM gestaoCondominio.zona WHERE codigo = @zona
+
+		IF @qntd = 0
+			RAISERROR ('Zona não existe!',16,1)
+
+	END CATCH
+END
+
+DROP PROC gestaoCondominio.insertFracao
+
+EXEC gestaoCondominio.insertFracao 38, '8A', '253774987', 200, ''
+
+SELECT * FROM gestaoCondominio.fracao;
+DELETE FROM gestaoCondominio.fracao
+WHERE identificador = '8A'
+
+select * from gestaoCondominio.entidade;
+select count(*) from gestaoCondominio.entidade where identificador = 35
+
+--
+
+CREATE PROC gestaoCondominio.insertEmpresa
+@identificador AS int, @nome AS varchar(120), @telemovel AS char(9),
+@nipc AS char(9), @email AS varchar(120), @endereco AS varchar(200)
+AS
+BEGIN
+	SET XACT_ABORT ON
+	BEGIN TRAN
+	INSERT INTO gestaoCondominio.entidade
+	VALUES (@identificador, @telemovel, @email, @nome, @endereco)
+
+	INSERT INTO gestaoCondominio.empresa
+	VALUES (@nipc, @identificador)
+	COMMIT TRAN
+END
+
+DROP PROC gestaoCondominio.insertEmpresa
+
+--
+
+CREATE PROC gestaoCondominio.insertServico
+@codigo AS int, @designacao as varchar(120), @custo as money, 
+@horas as int, @condominio as char(9), @tipo as varchar(30)
+AS
+BEGIN
+		INSERT INTO gestaoCondominio.servico
+		VALUES(@codigo,@designacao, @custo, @horas, @numRecibo, @condominio)
+END
+
+DROP PROC gestaoCondominio.insertServico
+
+CREATE PROC gestaoCondominio.pagaServico
+@codigo as int, @tipo as varchar(30)
+AS
+BEGIN
+	DECLARE @fk_p AS int
+	DECLARE @custo AS money
+	DECLARE @horas as int
+
+	SELECT @fk_p = FK_Pagamento, @custo = custo, @horas = horas
+	FROM gestaoCondominio.servico WHERE codigo = @codigo;
+
+	IF (@fk_p IS NOT NULL)
+		RAISERROR ('Serviço já pago!',16,1);
+	ELSE
+		BEGIN
+			DECLARE @entidadeP AS char(5)
+			DECLARE @referencia AS char(9)
+			DECLARE @numRecibo AS INT
+			SELECT @numRecibo = (count(*)+1) FROM gestaoCondominio.pagamento
+
+			SELECT @entidadeP = dbo.randomBetween(10000, 99999)
+			SELECT @referencia = dbo.randomBetween(100000000, 999999999)
+
+			SET XACT_ABORT ON
+			BEGIN TRAN
+
+			INSERT INTO gestaoCondominio.pagamento
+			(numRecibo, valorPagamento, dataPagamento, tipoPagamento, entidade, referencia)
+			VALUES
+			(@numRecibo, @custo * @horas, GETDATE(), @tipo, @entidadeP, @referencia)
+
+			UPDATE gestaoCondominio.servico
+			set FK_Pagamento = @numRecibo
+			where codigo = @codigo
+
+			COMMIT TRAN
+		END
+END
+
+DROP PROC gestaoCondominio.pagaServico
+
+select * from gestaoCondominio.servico
+select * from gestaoCondominio.pagamento
+
+exec gestaoCondominio.pagaServico 1, 'dinheiro'
+
+--
+
+CREATE PROC gestaoCondominio.insertSeguro
+@condominio AS char(9), @fracao As char(2), @designacao as varchar(200),
+@capitalO as money, @capitalF as money, @nome as varchar(120), @tipo as varchar(20),
+@numApolice as int
+AS
+BEGIN
+	IF @fracao = ''
+		SET @fracao = NULL
+
+	INSERT INTO gestaoCondominio.seguro
+	values(@numApolice,@designacao,@capitalO,@capitalF,@nome,@tipo,@condominio,@fracao)
+END
+
+DROP PROC gestaoCondominio.insetSeguro
+
+CREATE PROC gestaoCondominio.insertPessoa
+@identificador as int, @telemovel as char(9), @email as varchar(120),
+@nome as varchar(120), @endereco as varchar(200), @numContribuinte as char(9),
+@numCC as char(8), @genero as varchar(2), @dataNascimento as varchar(120)
+AS
+BEGIN
+	DECLARE @data AS DATE = convert(datetime, @dataNascimento, 103)
+	SET XACT_ABORT ON
+	BEGIN TRAN
+
+	INSERT INTO gestaoCondominio.entidade 
+		VALUES(@identificador, @telemovel, @email, @nome, @endereco)
+
+	INSERT INTO gestaoCondominio.pessoa
+		VALUES(@numContribuinte, @numCC, @genero, @dataNascimento, @identificador)
+
+	COMMIT TRAN
+END
+
+DROP PROC gestaoCondominio.insertPessoa;
+
+CREATE PROC gestaoCondominio.insertZona
+@codigo as int, @designacao as varchar(120)
+AS
+BEGIN
+	INSERT INTO gestaoCondominio.zona
+		VALUES(@codigo, @designacao)
+END
+
+DROP PROC gestaoCondominio.insertZona
+
 ---------------------- VIEWS -------------------
 
 -- 1. View para a tabela RANDOM poder ser utilizada na UDF
@@ -999,35 +1220,89 @@ BEGIN
 	SELECT @endereco = localizacao, @condominio = FK_Condominio, @identificador = identificador
 	FROM inserted
 
-	DECLARE @xmlteste XML = (SELECT identificador FROM inserted)
-	PRINT CONVERT(NVArCHAR(MAX), @xmlteste)
-
-	PRINT 'comeco'
-	PRINT @endereco
-	PRINT @identificador
-	PRINT @condominio
 	IF @endereco IS NULL OR @endereco = ''
 		-- Se o endereço for vazio, então utilizamos o endereço do condominio
 		BEGIN
-			PRINT 'if'
 			SELECT @endereco = endereço FROM
 			gestaoCondominio.condominio AS 
 			c WHERE c.numContribuinte = @condominio
 
-			PRINT @endereco
-			PRINT 'novo'
-			PRINT @identificador
-			PRINT @condominio
 			UPDATE gestaoCondominio.fracao
 			SET localizacao = @endereco
 			WHERE @identificador = identificador 
 			AND FK_Condominio = @condominio
 		END
-	PRINT 'fim'
 END
 
 DROP TRIGGER gestaoCondominio.enderecoFracao
 
+-- 5. Uma data de nascimento da pessoa tem de ser <= data atual
+
+CREATE TRIGGER gestaoCondominio.validPessoa ON gestaoCondominio.pessoa
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	DECLARE @atual AS DATE = GETDATE()
+	DECLARE @data AS DATE
+
+	SELECT @data = dataNascimento FROM inserted;
+
+	IF DATEDIFF(day,@data,@atual) < 0
+	BEGIN
+		RAISERROR ('Data de nascimento não pode passar o dia atual!', 16, 1);
+		ROLLBACK TRAN
+	END
+END
+
+DROP TRIGGER gestaoCondominio.validPessoa
+
+-- 6. A data de um proprietario não pode ultrapassar a data atual e 
+-- a data de fim não pode ser antes da data inicial
+
+CREATE TRIGGER gestaoCondominio.validProprietario
+ON gestaoCondominio.proprietario
+AFTER INSERT, UPDATE
+AS
+BEGIN
+	DECLARE @atual AS DATE = GETDATE()
+	DECLARE @inicio AS DATE
+	DECLARE @fim AS DATE
+
+	SELECT @inicio = inicioExercicio, @fim = fimExercicio FROM inserted;
+
+	IF DATEDIFF(day,@inicio,@atual) < 0 OR (@fim IS NOT NULL AND DATEDIFF(day,@fim,@atual) < 0)
+	BEGIN
+		RAISERROR ('Data não pode passar o dia atual!', 16, 1);
+		ROLLBACK TRAN
+	END
+
+	IF @fim IS NOT NULL AND DATEDIFF(day,@inicio,@fim) < 0
+	BEGIN
+		RAISERROR ('Data final não pode passar a data inicial!', 16, 1);
+		ROLLBACK TRAN
+	END
+END
+
+DROP TRIGGER gestaoCondominio.validProprietario;
+
+CREATE TRIGGER gestaoCondominio.validSeguro
+ON gestaoCondominio.seguro
+AFTER INSERT,UPDATE
+AS
+BEGIN
+	DECLARE @capO AS MONEY
+	DECLARE @capF AS MONEY
+
+	SELECT @capO = capitalObrigatoio, @capF = capitalFacultativo FROM inserted;
+
+	IF @capF < 0 OR (@capO IS NOT NULL AND @capO < 0)
+		BEGIN
+			RAISERROR ('O capital não pode ser negativo!', 16, 1);
+			ROLLBACK TRAN
+		END
+END
+
+DROP TRIGGER gestaoCondominio.validSeguro
 
 --UPDATE gestaoCondominio.fracao
 --SET localizacao = null, identificador = '0A', FK_Condominio = '279352856'
@@ -1176,3 +1451,9 @@ VALUES
 
 SELECT * FROM gestaoCondominio.mensalidade
 SELECT * FROM gestaoCondominio.pagamento
+
+DECLARE @teste AS MONEY
+
+SET @teste = -50.5
+
+print @teste
