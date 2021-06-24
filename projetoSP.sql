@@ -3,7 +3,7 @@
 
 ------------------- GETTERS ---------------------------------
 
--- 1. Obter as fraÁıes de um condomÌnio e seu proprietario
+-- 1. Obter as fra√ß√µes de um condom√≠nio e seu proprietario
 
 CREATE PROC gestaoCondominio.getFracoes
 @condominio char(9), @fracao varchar(2)
@@ -21,7 +21,7 @@ BEGIN
 	ON E.identificador = P.FK_Entidade
 END
 
--- 2. Obter as fraÁıes de um condomÌnio
+-- 2. Obter as fra√ß√µes de um condom√≠nio
 
 create proc gestaoCondominio.getSeguros
 @condominio char(9), @seguro varchar(2)
@@ -34,7 +34,7 @@ begin
 	AND (@seguro = '' OR S.nomeCompanhia LIKE '%' + @seguro + '%')
 end
 
--- 3. Obter os serviÁos de um condomÌnio
+-- 3. Obter os servi√ßos de um condom√≠nio
 
 create proc gestaoCondominio.getServicos
 @condominio char(9), @servico varchar(120)
@@ -47,7 +47,7 @@ begin
 	AND (@servico = '' OR S.designacao LIKE '%' + @servico + '%')
 end
 
--- 4. Obter todos os proprietarios que s„o pessoas de um condomÌnio 
+-- 4. Obter todos os proprietarios que s√£o pessoas de um condom√≠nio 
 
 CREATE PROCEDURE gestaoCondominio.ProprietariosPessoas
 @condominio char(9), @nome varchar(120)
@@ -67,7 +67,7 @@ AS
 	ON pess.identificador = ent.identificador
 	ORDER BY nome;
 
--- 5. Obter todos os propriet·rios que s„o empresas de um condomÌnio
+-- 5. Obter todos os propriet√°rios que s√£o empresas de um condom√≠nio
 
 CREATE PROCEDURE gestaoCondominio.ProprietariosEmpresas
 @condominio char(9), @nome varchar(120)
@@ -88,7 +88,7 @@ AS
 	ORDER BY nome;
 
 
--- 6. Obter todos os condominos que s„o pessoas de um condomÌnio
+-- 6. Obter todos os condominos que s√£o pessoas de um condom√≠nio
 
 CREATE PROCEDURE gestaoCondominio.CondominosPessoas
 @condominio char(9), @nome varchar(120)
@@ -108,7 +108,7 @@ AS
 	ON pess.identificador = ent.identificador
 	ORDER BY nome;
 
--- 7. Obter todos os condominos que s„o empresas de um condomÌnio
+-- 7. Obter todos os condominos que s√£o empresas de um condom√≠nio
 
 CREATE PROCEDURE gestaoCondominio.CondominosEmpresas
 @condominio char(9), @nome varchar(120)
@@ -129,12 +129,12 @@ AS
 	ORDER BY nome;
 
 
----------------------- INSER«’ES -------------------------------
+---------------------- INSER√á√ïES -------------------------------
 
--- Lembrando que as inserÁıes n„o est„o necessariamente responsabilizadas
--- pelas condiÁıes, uma vez que os triggers j· fazem isso.
+-- Lembrando que as inser√ß√µes n√£o est√£o necessariamente responsabilizadas
+-- pelas condi√ß√µes, uma vez que os triggers j√° fazem isso.
 
--- 1. Inserir em um condomÌnio
+-- 1. Inserir em um condom√≠nio
 
 CREATE PROCEDURE gestaoCondominio.insertCondominio
 @numC CHAR(9), @numReg INT, @nome VARCHAR(100),
@@ -150,7 +150,7 @@ DECLARE @estadoD AS BIT = cast(@estado AS BIT)
 INSERT INTO gestaoCondominio.condominio VALUES
 (@numC, @numReg, @nome, @inicioD, @fimD, @estadoD, @saldo, @endereco)
 
--- 2. Inserir uma FraÁ„o
+-- 2. Inserir uma Fra√ß√£o
 
 CREATE PROCEDURE gestaoCondominio.insertFracao
 @entidade AS int, @identificador AS char(2), @condominio AS char(9),
@@ -163,8 +163,8 @@ BEGIN
 
 		DECLARE @atual AS DATE = GETDATE()
 		DECLARE @ano AS int = YEAR(GETDATE())
-		-- Se n„o puder inserir na relaÁ„o propietario (ou seja, entidade n„o existe)
-		-- ocorrer· rollback
+		-- Se n√£o puder inserir na rela√ß√£o propietario (ou seja, entidade n√£o existe)
+		-- ocorrer√° rollback
 
 		INSERT INTO gestaoCondominio.fracao 
 		values(@identificador,@area,@localizacao,@condominio);
@@ -189,17 +189,17 @@ BEGIN
 		SELECT @qntd = count(*) FROM gestaoCondominio.condominio WHERE numContribuinte = @condominio
 
 		IF @qntd = 0
-			RAISERROR ('CondomÌnio n„o existe!',16,1)
+			RAISERROR ('Condom√≠nio n√£o existe!',16,1)
 
 		SELECT @qntd = count(*) FROM gestaoCondominio.entidade WHERE identificador = @entidade
 
 		IF @qntd = 0
-			RAISERROR ('Entidade n„o existe!',16,1)
+			RAISERROR ('Entidade n√£o existe!',16,1)
 
 		SELECT @qntd = count(*) FROM gestaoCondominio.zona WHERE codigo = @zona
 
 		IF @qntd = 0
-			RAISERROR ('Zona n„o existe!',16,1)
+			RAISERROR ('Zona n√£o existe!',16,1)
 
 	END CATCH
 END
@@ -221,7 +221,7 @@ BEGIN
 	COMMIT TRAN
 END
 
--- 4. Inserir um ServiÁo
+-- 4. Inserir um Servi√ßo
 
 CREATE PROC gestaoCondominio.insertServico
 @codigo AS int, @designacao as varchar(120), @custo as money, 
@@ -310,20 +310,20 @@ BEGIN
 			DECLARE @fimD AS DATE = convert(datetime, @fimExercicio, 103)
 			UPDATE gestaoCondominio.condominio
 			SET numRegistro = @numRegistro, nome = @nome, inicioExercicio = @inicioExercicio,
-			fimExercicio = @fimExercicio, estado = @estado, saldo = @saldo, endereÁo = @endereco
+			fimExercicio = @fimExercicio, estado = @estado, saldo = @saldo, endere√ßo = @endereco
 			WHERE numContribuinte = @numContribuinte
 		END
 	ELSE
 		BEGIN
 			UPDATE gestaoCondominio.condominio
 			SET numRegistro = @numRegistro, nome = @nome, inicioExercicio = @inicioExercicio,
-			estado = @estado, saldo = @saldo, endereÁo = @endereco
+			estado = @estado, saldo = @saldo, endere√ßo = @endereco
 			WHERE numContribuinte = @numContribuinte
 		END
 END
 select * from gestaoCondominio.condominio
 
--- 2. FraÁ„o
+-- 2. Fra√ß√£o
 
 CREATE PROC gestaoCondominio.updateFracao
 @identificador as char(2), @area as int, @localizacao as varchar(200)
@@ -345,7 +345,7 @@ begin
 	where numApolice = @numApolice
 end
 
--- 4. ServiÁo
+-- 4. Servi√ßo
 
 CREATE PROC gestaoCondominio.updateServico
 @codigo as int, @designacao as varchar(120), @horas as int, @custo as money
@@ -359,7 +359,7 @@ end
 -- 5. Proprietarios Pessoa
 
 CREATE PROC gestaoCondominio.updateProprietarioPessoa
-@identificador as int, @mail as varchar(120), @telemovel as char(9), @endereco as varchar(200), @genero as varchar(2), @fimE as varchar(80), @nome as varchar(120)
+@identificador as int, @email as varchar(120), @telemovel as char(9), @endereco as varchar(200), @genero as varchar(2), @fimE as varchar(80), @nome as varchar(120)
 as
 begin
 	SET XACT_ABORT ON
@@ -372,7 +372,7 @@ begin
 				set genero = @genero
 				where identificador = @identificador
 				update gestaoCondominio.entidade
-				set nome = @nome, telemovel = @telemovel, email = @mail, enderecoAtual = @endereco
+				set nome = @nome, telemovel = @telemovel, email = @email, enderecoAtual = @endereco
 				where identificador = @identificador
 		COMMIT TRAN
 end
@@ -380,7 +380,7 @@ end
 -- 6. Condomino Pessoa
 
 CREATE PROC gestaoCondominio.updateCondominoPessoa
-@identificador as int, @mail as varchar(120), @telemovel as char(9), @endereco as varchar(200), @genero as varchar(2), @fimE as varchar(80), @nome as varchar(120)
+@identificador as int, @email as varchar(120), @telemovel as char(9), @endereco as varchar(200), @genero as varchar(2), @fimE as varchar(80), @nome as varchar(120)
 as
 begin
 	SET XACT_ABORT ON
@@ -393,7 +393,7 @@ begin
 				set genero = @genero
 				where identificador = @identificador
 				update gestaoCondominio.entidade
-				set nome = @nome, telemovel = @telemovel, email = @mail, enderecoAtual = @endereco
+				set nome = @nome, telemovel = @telemovel, email = @email, enderecoAtual = @endereco
 				where identificador = @identificador
 		COMMIT TRAN
 end
@@ -401,7 +401,7 @@ end
 -- 7. Proprietario Empresa
 
 CREATE PROC gestaoCondominio.updateProprietarioEmpresa
-@identificador as int, @mail as varchar(120), @telemovel as char(9), @endereco as varchar(200), @fimE as varchar(80), @nome as varchar(120)
+@identificador as int, @email as varchar(120), @telemovel as char(9), @endereco as varchar(200), @fimE as varchar(80), @nome as varchar(120)
 as
 begin
 	SET XACT_ABORT ON
@@ -411,7 +411,7 @@ begin
 				set fimExercicio = @fim
 				where FK_Entidade = @identificador
 				update gestaoCondominio.entidade
-				set nome = @nome, telemovel = @telemovel, email = @mail, enderecoAtual = @endereco
+				set nome = @nome, telemovel = @telemovel, email = @email, enderecoAtual = @endereco
 				where identificador = @identificador
 		COMMIT TRAN
 end
@@ -419,7 +419,7 @@ end
 -- 8. Condomino Empresa
 
 CREATE PROC gestaoCondominio.updateCondominoEmpresa
-@identificador as int, @mail as varchar(120), @telemovel as char(9), @endereco as varchar(200), @fimE as varchar(80), @nome as varchar(120)
+@identificador as int, @email as varchar(120), @telemovel as char(9), @endereco as varchar(200), @fimE as varchar(80), @nome as varchar(120)
 as
 begin
 	SET XACT_ABORT ON
@@ -429,7 +429,7 @@ begin
 				set fimExercicio = @fim
 				where FK_Entidade = @identificador
 				update gestaoCondominio.entidade
-				set nome = @nome, telemovel = @telemovel, email = @mail, enderecoAtual = @endereco
+				set nome = @nome, telemovel = @telemovel, email = @email, enderecoAtual = @endereco
 				where identificador = @identificador
 		COMMIT TRAN
 end
@@ -453,26 +453,26 @@ gestaoCondominio.mensalidade
 WHERE ano=@ano AND FK_Entidade = @entidade AND FK_Condominio = @condominio
 AND FK_Fracao = @fracao
 
--- numMensaidades n„o pode passar de 12
+-- numMensaidades n√£o pode passar de 12
 SET @newNumMens = (@valor / @valorMensalidade)
 
 if @numMensalidades + @newNumMens > 12
 	BEGIN
-			RAISERROR ('Esse ano n„o aceita mais tanto pagamento!' ,16,1)
+			RAISERROR ('Esse ano n√£o aceita mais tanto pagamento!' ,16,1)
 			ROLLBACK TRAN comeco
 	END
 
 -- Se o valor pago for igual a 0, ou diferente de um valor exato,
--- cancela a transaÁ„o
+-- cancela a transa√ß√£o
 ELSE IF @valor < 0
 	BEGIN
-		RAISERROR ('Valor n„o pode ser negativo!' ,16,1)
+		RAISERROR ('Valor n√£o pode ser negativo!' ,16,1)
 		ROLLBACK TRAN comeco
 	END
 
 ELSE IF @valor = 0 OR (@valor % @valorMensalidade != 0)
 	BEGIN
-		RAISERROR ('Valor pago tem de ser compatÌvel com o valor da mensalidade!' ,16,1)
+		RAISERROR ('Valor pago tem de ser compat√≠vel com o valor da mensalidade!' ,16,1)
 		ROLLBACK TRAN comeco
 	END
 ELSE
@@ -506,13 +506,13 @@ ELSE
 		VALUES
 		(@condominio, @fracao, @ano, @numRecibo)
 
-		-- Se chegou atÈ aqui, foi tudo atualizado
+		-- Se chegou at√© aqui, foi tudo atualizado
 
 		COMMIT
 
 	END
 
--- 2. Pagar um serviÁo
+-- 2. Pagar um servi√ßo
 
 CREATE PROC gestaoCondominio.pagaServico
 @codigo as int, @tipo as varchar(30)
@@ -526,7 +526,7 @@ BEGIN
 	FROM gestaoCondominio.servico WHERE codigo = @codigo;
 
 	IF (@fk_p IS NOT NULL)
-		RAISERROR ('ServiÁo j· pago!',16,1);
+		RAISERROR ('Servi√ßo j√° pago!',16,1);
 	ELSE
 		BEGIN
 			DECLARE @entidadeP AS char(5)
@@ -539,7 +539,7 @@ BEGIN
 
 			SET XACT_ABORT ON
 			BEGIN TRAN
-			declare @desc as varchar(120) = 'ServiÁo'
+			declare @desc as varchar(120) = 'Servi√ßo'
 
 			INSERT INTO gestaoCondominio.pagamento
 			(numRecibo, valorPagamento, dataPagamento, tipoPagamento, entidade, referencia, descricao)
@@ -554,12 +554,12 @@ BEGIN
 		END
 END
 
---------------------- N¬O UTILIZADO -----------------------------
+--------------------- N√ÇO UTILIZADO -----------------------------
 
 --CREATE PROCEDURE gestaoCondominio.CondominosFracao
 --@condominio char(9), @fracao varchar(2)
 --AS
----- Desc: Obter todas as ENTIDADES (e seu tipo) que s„o condominas
+---- Desc: Obter todas as ENTIDADES (e seu tipo) que s√£o condominas
 --DECLARE @tablename TABLE (
 --	identificador int,
 --	telemovel char(9),
