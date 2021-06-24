@@ -24,19 +24,19 @@
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(1, '964709662', 'luciusviniciusf@ua.pt', 'Lucius Filho', 'Rua S„o Sebasti„o 124')
+(1, '964709662', 'luciusviniciusf@ua.pt', 'Lucius Filho', 'Rua S√£o Sebasti√£o 124')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(2, '914281478', 'diana.siso@ua.pt', 'Diana Siso', 'Rua S„o JosÈ 984')
+(2, '914281478', 'diana.siso@ua.pt', 'Diana Siso', 'Rua S√£o Jos√© 984')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(3, '123456789', 'randommail@gmail.com', 'Paulo Sousa', 'Rua GlÛria 199')
+(3, '123456789', 'randommail@gmail.com', 'Paulo Sousa', 'Rua Gl√≥ria 199')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(4, '987654321', 'diogomonteiro@ua.pt', 'Diogo Monteiro', 'Rua S„o Sebasti„o 124')
+(4, '987654321', 'diogomonteiro@ua.pt', 'Diogo Monteiro', 'Rua S√£o Sebasti√£o 124')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
@@ -44,37 +44,37 @@ VALUES
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(6, '654321987', 'isabelrosario@ua.pt', 'Isabel Rosario', 'Av S„o Jo„o 88')
+(6, '654321987', 'isabelrosario@ua.pt', 'Isabel Rosario', 'Av S√£o Jo√£o 88')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(7, '321654000', 'afonsocampos@ua.pt', 'Afonso Campos', 'Rua S„o JosÈ 200')
+(7, '321654000', 'afonsocampos@ua.pt', 'Afonso Campos', 'Rua S√£o Jos√© 200')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(8, '010203040', 'chadcamila@ua.pt', 'Chad Camila', 'Av Maria da GlÛria 12')
+(8, '010203040', 'chadcamila@ua.pt', 'Chad Camila', 'Av Maria da Gl√≥ria 12')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(9, '102033311', 'tomecarvalho@ua.pt', 'TomÈ Carvalho', 'Rua Arnaldo Simıes Janu·rio 241')
+(9, '102033311', 'tomecarvalho@ua.pt', 'Tom√© Carvalho', 'Rua Arnaldo Sim√µes Janu√°rio 241')
 
 -------------------------------------
 
 INSERT INTO gestaoCondominio.condominio 
 VALUES 
-('258341908', 0001, 'CondomÌnio Sul Ribeira', '20190609', null, 1, 50, 'Av. 25 de Abril 41, 3050-335 Mealhada')
+('258341908', 0001, 'Condom√≠nio Sul Ribeira', '20190609', null, 1, 50, 'Av. 25 de Abril 41, 3050-335 Mealhada')
 
 INSERT INTO gestaoCondominio.condominio 
 VALUES 
-('279352856', 0002, 'CondomÌnio Porto Azul', '20201001', null, 1, 1200, 'Rua Doutor JosÈ Paulo Cancela, 3780-307 Anadia')
+('279352856', 0002, 'Condom√≠nio Porto Azul', '20201001', null, 1, 1200, 'Rua Doutor Jos√© Paulo Cancela, 3780-307 Anadia')
 
 INSERT INTO gestaoCondominio.condominio 
 VALUES 
-('295831584', 0003, 'CondomÌnio InspiraÁ„o do AlÈm', '20180202', null, 1, 90, 'R. Liberdade, 3750-779 ¡gueda')
+('295831584', 0003, 'Condom√≠nio Inspira√ß√£o do Al√©m', '20180202', null, 1, 90, 'R. Liberdade, 3750-779 √Ågueda')
 
 INSERT INTO gestaoCondominio.condominio 
 VALUES 
-('253774987', 0004, 'CondomÌnio Avestruz Selvagem', '20190802', '20200802', 0, 734.98, 'R. Principal 21, Jafafe')
+('253774987', 0004, 'Condom√≠nio Avestruz Selvagem', '20190802', '20200802', 0, 734.98, 'R. Principal 21, Jafafe')
 
 -------------------------------------------------
 
@@ -126,19 +126,19 @@ VALUES
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(10, '000111222', 'nicelevators@hotmail.com', 'Nice Elevators tda', 'Av S„o Alexandre 2')
+(10, '000111222', 'nicelevators@hotmail.com', 'Nice Elevators tda', 'Av S√£o Alexandre 2')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(11, '784648284', 'ultimateSecurity@gmail.com', 'Security Ultimate', 'Av S„o Alexandre 4')
+(11, '784648284', 'ultimateSecurity@gmail.com', 'Security Ultimate', 'Av S√£o Alexandre 4')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(12, '123658390', 'speedcleanfast@hotmail.com', 'SpeedClean', 'Rua S„o JosÈ 600')
+(12, '123658390', 'speedcleanfast@hotmail.com', 'SpeedClean', 'Rua S√£o Jos√© 600')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(13, '005968211', 'oficialMcDonalds@hotmail.com', 'Mc Donalds', 'Av S„o Vincente 14')
+(13, '005968211', 'oficialMcDonalds@hotmail.com', 'Mc Donalds', 'Av S√£o Vincente 14')
 
 ---------------------------------------------------------
 
@@ -226,35 +226,35 @@ VALUES ('4B', 160, null, '279352856')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('1A', 200, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 1-A, 3750-779 ¡gueda', '295831584')
+('1A', 200, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 1-A, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('2A', 200, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 2-A, 3750-779 ¡gueda', '295831584')
+('2A', 200, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 2-A, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('3A', 200, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 3-A, 3750-779 ¡gueda', '295831584')
+('3A', 200, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 3-A, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('4A', 200, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 4-A, 3750-779 ¡gueda', '295831584')
+('4A', 200, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 4-A, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('1B', 205, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 1-B, 3750-779 ¡gueda', '295831584')
+('1B', 205, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 1-B, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('2B', 205, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 2-B, 3750-779 ¡gueda', '295831584')
+('2B', 205, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 2-B, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('3B', 205, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 3-B, 3750-779 ¡gueda', '295831584')
+('3B', 205, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 3-B, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
-('4B', 205, 'R. Liberdade, Condominio InspiraÁ„o do AlÈm 4-B, 3750-779 ¡gueda', '295831584')
+('4B', 205, 'R. Liberdade, Condominio Inspira√ß√£o do Al√©m 4-B, 3750-779 √Ågueda', '295831584')
 
 INSERT INTO gestaoCondominio.fracao
 VALUES
@@ -338,11 +338,11 @@ VALUES
 
 INSERT INTO gestaoCondominio.servico 
 VALUES
-(0004, 'SeguranÁa', 237.20, 24, null, '279352856')
+(0004, 'Seguran√ßa', 237.20, 24, null, '279352856')
 
 INSERT INTO gestaoCondominio.servico 
 VALUES
-(0005, 'SeguranÁa', 237.20, 24, null, '295831584')
+(0005, 'Seguran√ßa', 237.20, 24, null, '295831584')
 
 INSERT INTO gestaoCondominio.servico 
 VALUES
@@ -842,7 +842,7 @@ VALUES
 
 INSERT INTO gestaoCondominio.temAssociada 
 VALUES 
-(0005, '79352856', '2B')
+(0005, '279352856', '2B')
 
 INSERT INTO gestaoCondominio.temAssociada 
 VALUES 
@@ -960,11 +960,11 @@ VALUES
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(14, '875839359', 'lucaspereira@hotmail.com', 'Lucas Pereira', 'Rua S„o Bernado 28')
+(14, '875839359', 'lucaspereira@hotmail.com', 'Lucas Pereira', 'Rua S√£o Bernado 28')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(15, '868333450', 'johnsmith@gmail.pt', 'John Smith', 'Rua S„o Vincente 188')
+(15, '868333450', 'johnsmith@gmail.pt', 'John Smith', 'Rua S√£o Vincente 188')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
@@ -976,27 +976,27 @@ VALUES
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(18, '890123050', 'mramogus@sus.jp', 'Ian Sakamoto', 'Av Maria da GlÛria 12')
+(18, '890123050', 'mramogus@sus.jp', 'Ian Sakamoto', 'Av Maria da Gl√≥ria 12')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(19, '192939405', 'loremipsum@generator.com', 'Laura Imps', 'Av S„o Alexandre 12')
+(19, '192939405', 'loremipsum@generator.com', 'Laura Imps', 'Av S√£o Alexandre 12')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(20, '859030220', 'danielmonteiro@ua.pt', 'Daniel Monteiro', 'Av S„o Bernado 1024')
+(20, '859030220', 'danielmonteiro@ua.pt', 'Daniel Monteiro', 'Av S√£o Bernado 1024')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(21, '467382930', 'carloscosta@ua.pt', 'Carlos Costa', 'Rua Santa Maria da GlÛria 27')
+(21, '467382930', 'carloscosta@ua.pt', 'Carlos Costa', 'Rua Santa Maria da Gl√≥ria 27')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(22, '098543200', 'jsp@ua.pt', 'Joaquim Pinto', 'Rua Santa Maria da GlÛria 28')
+(22, '098543200', 'jsp@ua.pt', 'Joaquim Pinto', 'Rua Santa Maria da Gl√≥ria 28')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(23, '555889300', 'carlosbastos@ua.pt', 'Carlos Bastos', 'Rua Santa Maria da GlÛria 127')
+(23, '555889300', 'carlosbastos@ua.pt', 'Carlos Bastos', 'Rua Santa Maria da Gl√≥ria 127')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
@@ -1008,7 +1008,7 @@ VALUES
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(26, '855383111', 'alexandremartins@ua.pt', 'Alexandre Martins', 'Rua Santa Maria da GlÛria 57')
+(26, '855383111', 'alexandremartins@ua.pt', 'Alexandre Martins', 'Rua Santa Maria da Gl√≥ria 57')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
@@ -1118,7 +1118,7 @@ VALUES
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
-(31, '123794569', 'tos@ua.pt', 'TomÈ Oliveira', 'Av Princial 668')
+(31, '123794569', 'tos@ua.pt', 'Tom√© Oliveira', 'Av Princial 668')
 
 INSERT INTO gestaoCondominio.entidade
 VALUES
