@@ -9,16 +9,20 @@ CREATE PROC gestaoCondominio.getFracoes
 @condominio char(9), @fracao varchar(2)
 AS
 BEGIN
-	SELECT identificador,area,localizacao FROM
+	SELECT F.identificador as id,area,localizacao,E.nome as prop FROM
 	gestaoCondominio.condominio AS C join
 	gestaoCondominio.fracao AS F
 	ON C.numContribuinte = F.FK_Condominio
 	AND C.numContribuinte = @condominio
 	AND (@fracao = '' OR F.identificador LIKE '%' + @fracao + '%' )
+	join gestaoCondominio.proprietario AS P
+	ON F.identificador = P.FK_Fracao
+	join gestaoCondominio.entidade as E
+	ON E.identificador = P.FK_Entidade
 END
 
 -- 2. Obter as frações de um condomínio
-
+drop proc gestaoCondominio.getSeguros
 create proc gestaoCondominio.getSeguros
 @condominio char(9), @seguro varchar(2)
 as
@@ -30,8 +34,10 @@ begin
 	AND (@seguro = '' OR S.nomeCompanhanhia LIKE '%' + @seguro + '%')
 end
 
--- 3. Obter os serviços de um condomínio
+exec gestaoCondominio.getSeguros '279352856', ''
 
+-- 3. Obter os serviços de um condomínio
+drop proc gestaoCondominio.getServicos
 create proc gestaoCondominio.getServicos
 @condominio char(9), @servico varchar(120)
 as
@@ -45,6 +51,7 @@ end
 
 -- 4. Obter todos os proprietarios que são pessoas de um condomínio 
 
+drop proc gestaoCondominio.ProprietariosPessoas
 CREATE PROCEDURE gestaoCondominio.ProprietariosPessoas
 @condominio char(9), @nome varchar(120)
 AS
@@ -65,6 +72,7 @@ AS
 
 -- 5. Obter todos os proprietários que são empresas de um condomínio
 
+drop proc gestaoCondominio.ProprietariosEmpresas
 CREATE PROCEDURE gestaoCondominio.ProprietariosEmpresas
 @condominio char(9), @nome varchar(120)
 AS
@@ -86,6 +94,7 @@ AS
 
 -- 6. Obter todos os condominos que são pessoas de um condomínio
 
+drop proc gestaoCondominio.CondominosPessoas
 CREATE PROCEDURE gestaoCondominio.CondominosPessoas
 @condominio char(9), @nome varchar(120)
 AS
@@ -105,7 +114,7 @@ AS
 	ORDER BY nome;
 
 -- 7. Obter todos os condominos que são empresas de um condomínio
-
+drop proc gestaoCondominio.CondominosEmpresas
 CREATE PROCEDURE gestaoCondominio.CondominosEmpresas
 @condominio char(9), @nome varchar(120)
 AS
@@ -148,9 +157,10 @@ INSERT INTO gestaoCondominio.condominio VALUES
 
 -- 2. Inserir uma Fração
 
+drop proc gestaoCondominio.insertFracao
 CREATE PROCEDURE gestaoCondominio.insertFracao
 @entidade AS int, @identificador AS char(2), @condominio AS char(9),
-@area as int, @localizacao as varchar(200), @zona as int
+@area as int, @localizacao as varchar(200), @zona as int, @mensalidade as money
 AS
 BEGIN
 	BEGIN TRY
@@ -158,6 +168,7 @@ BEGIN
 		SAVE TRAN comeco
 
 		DECLARE @atual AS DATE = GETDATE()
+		DECLARE @ano AS int = YEAR(GETDATE())
 		-- Se não puder inserir na relação propietario (ou seja, entidade não existe)
 		-- ocorrerá rollback
 
@@ -169,6 +180,9 @@ BEGIN
 
 		INSERT INTO gestaoCondominio.temAssociada
 		values(@zona,@condominio,@identificador)
+
+		INSERT INTO gestaoCondominio.mensalidade
+		values(@ano, null, @mensalidade, 0, @entidade, @condominio, @identificador)
 
 		COMMIT TRAN
 	END TRY
@@ -275,6 +289,14 @@ BEGIN
 		VALUES(@codigo, @designacao)
 END
 
+CREATE PROC gestaoCondominio.insertFornecedor
+@identificadorEntidade as int, @identificadorServico as int
+AS
+BEGIN
+	INSERT INTO gestaoCondominio.fornece
+		VALUES(@identificadorEntidade, @identificadorServico, GETDATE(), null)
+END
+
 ----------------------- UPDATE ---------------------------------
 
 -- 1. Fazer um update para o condominio
@@ -315,6 +337,25 @@ begin
 	set identificador = @identificador, area = @area, localizacao = @localizacao
 	where identificador = @identificador
 end
+
+CREATE PROC gestaoCondominio.updateSeguro
+@numApolice as int, @fracao as char(2), @capitalF as float, @capitalO as float
+as
+begin
+	update gestaoCondominio.seguro
+	set FK_Fracao = @fracao, capitalFacultativo = @capitalF, capitalObrigatorio= @capitalO
+	where numApolice = @numApolice
+end
+
+CREATE PROC gestaoCondominio.updateServico
+@codigo as int, @designacao as varchar(120), @horas as int, @custo as money
+as
+begin
+	update gestaoCondominio.servico
+	set designacao = @designacao, horas = @horas, custo = @custo
+	where codigo = @codigo
+end
+
 
 
 --------------------- UTILIDADES -------------------------------
