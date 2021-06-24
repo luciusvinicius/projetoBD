@@ -112,7 +112,6 @@ BEGIN
 
 	SELECT @endereco = localizacao, @condominio = FK_Condominio, @identificador = identificador
 	FROM inserted
-
 	IF @endereco IS NULL OR @endereco = ''
 		-- Se o endereço for vazio, então utilizamos o endereço do condominio
 		BEGIN
@@ -183,7 +182,7 @@ BEGIN
 	DECLARE @capO AS MONEY
 	DECLARE @capF AS MONEY
 
-	SELECT @capO = capitalObrigatoio, @capF = capitalFacultativo FROM inserted;
+	SELECT @capO = capitalObrigatorio, @capF = capitalFacultativo FROM inserted;
 
 	IF @capF < 0 OR (@capO IS NOT NULL AND @capO < 0)
 		BEGIN

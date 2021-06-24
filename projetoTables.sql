@@ -33,7 +33,7 @@ create table gestaoCondominio.pessoa(
 	numCC char(8) not null unique,
 	genero varchar(2) not null,
 	dataNascimento date not null,
-	FK_Entidade int references gestaoCondominio.entidade(identificador) not null,
+	identificador int references gestaoCondominio.entidade(identificador) not null,
 )
 
 create table gestaoCondominio.servico(
@@ -71,7 +71,6 @@ create table gestaoCondominio.mensalidade(
   valor money not null,
   numMensalidadesPagas tinyint not null,
   FK_Entidade int references gestaoCondominio.entidade(identificador) not null,
-  FK_Pagamento int references gestaoCondominio.pagamento(numRecibo) default null,
   FK_Condominio char(9) references gestaoCondominio.condominio(numContribuinte) not null,
   FK_Fracao char(2),
   foreign key (FK_Fracao, FK_Condominio) references gestaoCondominio.fracao(identificador, FK_Condominio),
